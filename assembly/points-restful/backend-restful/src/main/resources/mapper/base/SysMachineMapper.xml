@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wt2024.base.mapper.SysMachineMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.base.entity.SysMachine">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="machine" jdbcType="VARCHAR" property="machine"/>
+        <result column="module" jdbcType="VARCHAR" property="module"/>
+        <result column="node" jdbcType="VARCHAR" property="node"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="describe" jdbcType="VARCHAR" property="describe"/>
+        <result column="lasttime" jdbcType="VARCHAR" property="lasttime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,machine, `module`, node, `type`, `describe`,lasttime
+    </sql>
+
+    <select id="selectByModule" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_machine
+        where `module` in
+        <foreach item="modules" collection="modules" open="(" separator="," close=")">
+            #{modules,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_machine
+    </select>
+    <select id="querySysMachine" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_machine where machine = #{machine,jdbcType=VARCHAR} and `module` = #{module,jdbcType=VARCHAR} and node
+        = #{node,jdbcType=VARCHAR} and `type` = #{type,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="updateOrInsert" parameterType="com.wt2024.base.entity.SysMachine">
+        <selectKey keyProperty="count" order="BEFORE" resultType="int">
+            select count(*) as count from sys_machine where machine = #{machine,jdbcType=VARCHAR} and `module` =
+            #{module,jdbcType=VARCHAR} and node = #{node,jdbcType=VARCHAR} and `type` = #{type,jdbcType=VARCHAR}
+        </selectKey>
+        <if test="count>0">
+            update sys_machine set lasttime=#{lasttime,jdbcType=VARCHAR},`describe`=#{describe,jdbcType=VARCHAR} where
+            machine = #{machine,jdbcType=VARCHAR} and `module` = #{module,jdbcType=VARCHAR} and node =
+            #{node,jdbcType=VARCHAR} and `type` = #{type,jdbcType=VARCHAR} and lasttime <![CDATA[ < ]]>
+            #{lasttime,jdbcType=VARCHAR}
+        </if>
+        <if test="count==0">
+            insert into sys_machine(machine, `module`, node, `type`, `describe`,lasttime)
+            values (
+            #{machine,jdbcType=VARCHAR},#{module,jdbcType=VARCHAR},#{node,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{describe,jdbcType=VARCHAR},#{lasttime,jdbcType=VARCHAR})
+        </if>
+    </insert>
+</mapper>

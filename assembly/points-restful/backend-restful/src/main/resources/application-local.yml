@@ -1,0 +1,7 @@
+cache:
+  type: redis
+
+logging:
+  node-name: local
+
+

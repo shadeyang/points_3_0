@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsTransTempMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsTransTemp">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="debit_or_credit" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="reversed_flag" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="old_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_channel" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="sys_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="rules_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="cost_line" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="trans_flag" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="process_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.wt2024.points.repository.account.entity.PointsTransTemp">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="debit_or_credit" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="reversed_flag" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="old_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_channel" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="sys_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="rules_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="cost_line" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="trans_flag" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="process_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="description" javaType="java.lang.String" jdbcType="LONGVARCHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, trans_no, customer_id, points_type_no, institution_id, trans_date, trans_time,
+        trans_type_no, debit_or_credit, end_date, points_amount, reversed_flag, old_trans_no,
+        trans_channel, merchant_no, voucher_type_no, voucher_no, trans_status, operator, sys_trans_no,
+        rules_id, cost_line, clearing_amt, trans_flag, process_date
+    </sql>
+    <sql id="Blob_Column_List">
+        description
+    </sql>
+
+    <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsTransTemp">
+        insert into points_trans_temp (trans_no, customer_id, points_type_no,
+        institution_id, trans_date, trans_time,
+        trans_type_no, debit_or_credit, end_date,
+        points_amount, reversed_flag, old_trans_no,
+        trans_channel, merchant_no, voucher_type_no,
+        voucher_no, trans_status, operator,
+        sys_trans_no, rules_id, cost_line,
+        clearing_amt, trans_flag, description
+        )
+        values (#{transNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR},
+        #{pointsTypeNo,jdbcType=VARCHAR}, #{institutionId,jdbcType=VARCHAR}, #{transDate,jdbcType=VARCHAR},
+        #{transTime,jdbcType=VARCHAR}, #{transTypeNo,jdbcType=VARCHAR}, #{debitOrCredit,jdbcType=CHAR},
+        #{endDate,jdbcType=TIMESTAMP}, #{pointsAmount,jdbcType=DECIMAL}, #{reversedFlag,jdbcType=CHAR},
+        #{oldTransNo,jdbcType=VARCHAR}, #{transChannel,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR},
+        #{voucherTypeNo,jdbcType=VARCHAR}, #{voucherNo,jdbcType=VARCHAR}, #{transStatus,jdbcType=CHAR},
+        #{operator,jdbcType=VARCHAR}, #{sysTransNo,jdbcType=VARCHAR}, #{rulesId,jdbcType=INTEGER},
+        #{costLine,jdbcType=VARCHAR}, #{clearingAmt,jdbcType=DECIMAL}, #{transFlag,jdbcType=CHAR},
+        #{description,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <select id="queryAllWantToAsync" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_temp where
+        id <![CDATA[ > ]]> #{startIndex} and trans_flag='0'
+        <if test="customerId != null and customerId != ''">
+            and customer_id = #{customerId}
+        </if>
+        <if test="pointsTypeNo != null and pointsTypeNo != ''">
+            and points_type_no = #{pointsTypeNo}
+        </if>
+        limit #{pageSize}
+    </select>
+
+    <delete id="deleteHasDone">
+        delete from points_trans_temp where trans_flag='1'
+    </delete>
+
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_temp where id = #{id} and trans_flag=#{transFlag}
+    </select>
+
+    <select id="queryByTransNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_temp where trans_no = #{transNo}
+    </select>
+    <select id="queryCustomerAccountingPointsTrans" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_temp where customer_id = #{customerId} and points_type_no = #{pointsTypeNo} and
+        trans_flag='0'
+    </select>
+    <select id="selectOneCustomerAccountingPointsTrans" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_temp where customer_id = #{customerId} and points_type_no = #{pointsTypeNo}
+        <if test="startTransNo != null and startTransNo != ''">
+            <if test="include">
+                and trans_no <![CDATA[ >= ]]> #{startTransNo}
+            </if>
+            <if test="!include">
+                and trans_no <![CDATA[ > ]]> #{startTransNo}
+            </if>
+        </if>
+        and trans_flag!='1' limit 0,1
+    </select>
+
+    <update id="processUnDoPointsTrans">
+        update points_trans_temp set trans_flag='2',process_date = now() where id = #{id} and trans_flag='0'
+    </update>
+<!--    <update id="processDonePointsTrans">-->
+<!--        update points_trans_temp set trans_flag='1',process_date = now() where id = #{id} and trans_flag='2'-->
+<!--    </update>-->
+    <delete id="processDonePointsTrans">
+        delete from points_trans_temp where id = #{id} and trans_flag='2'
+    </delete>
+</mapper>

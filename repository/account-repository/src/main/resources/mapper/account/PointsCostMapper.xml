@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsCostMapper">
+  <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsCost">
+    <constructor>
+      <arg column="cost_line" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cost_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    cost_line, institution_id, cost_name
+  </sql>
+  <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsCost">
+    insert into points_cost (cost_line, institution_id, cost_name
+      )
+    values (#{costLine,jdbcType=VARCHAR}, #{institutionId,jdbcType=VARCHAR}, #{costName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wt2024.points.repository.account.entity.PointsCost">
+    insert into points_cost
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costLine != null">
+        cost_line,
+      </if>
+      <if test="institutionId != null">
+        institution_id,
+      </if>
+      <if test="costName != null">
+        cost_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costLine != null">
+        #{costLine,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionId != null">
+        #{institutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="costName != null">
+        #{costName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <update id="updateByCostLine" parameterType="com.wt2024.points.repository.account.entity.PointsCost">
+      update points_cost set cost_name = #{costName,jdbcType=VARCHAR} where institution_id = #{institutionId,jdbcType=VARCHAR} and cost_line =
+      #{costLine,jdbcType=VARCHAR}
+    </update>
+  <delete id="deleteByCostLine">
+    delete from points_cost where institution_id = #{institutionId,jdbcType=VARCHAR} and cost_line = #{costLine,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectByCostLine" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from points_cost where cost_line = #{costLine,jdbcType=VARCHAR} and institution_id = #{institutionId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByInstitutionId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from points_cost
+    <where>
+      <if test="institutionId !=null and institutionId != ''">
+        and institution_id = #{institutionId,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+</mapper>

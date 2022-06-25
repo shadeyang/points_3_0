@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.customer.mapper.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.wt2024.points.repository.customer.entity.Customer">
+    <constructor>
+      <idArg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="gender" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="birthdate" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operator" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="customer_lvl" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    customer_id, customer_name, gender, phone, email, address, birthdate, institution_id, operator, customer_lvl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from customer
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCustomerName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from customer where customer_name = #{customerName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCustomer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from customer
+    <where>
+      <if test="customerId != null and customerId != ''">
+        and customer_id = #{customerId,jdbcType=VARCHAR}
+      </if>
+      <if test="customerName != null and customerName != ''">
+        and customer_name = #{customerName,jdbcType=VARCHAR}
+      </if>
+      <if test="gender != null and gender != ''">
+        and gender = #{gender,jdbcType=CHAR}
+      </if>
+      <if test="phone != null and phone != ''">
+        and phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null and email != ''">
+        and email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="address != null and address != ''">
+        and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="birthdate != null and birthdate != ''">
+        and birthdate = #{birthdate,jdbcType=VARCHAR}
+      </if>
+      <if test="institutionId != null and institutionId != ''">
+        and institution_id = #{institutionId,jdbcType=VARCHAR}
+      </if>
+      <if test="operator != null and operator != ''">
+        and operator = #{operator,jdbcType=VARCHAR}
+      </if>
+      <if test="customerLvl != null and customerLvl != ''">
+        and customer_lvl = #{customerLvl,jdbcType=CHAR},
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from customer
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wt2024.points.repository.customer.entity.Customer">
+    insert into customer (customer_id, customer_name, gender, 
+      phone, email, address, 
+      birthdate, institution_id, operator, 
+      customer_lvl)
+    values (#{customerId,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{birthdate,jdbcType=VARCHAR}, #{institutionId,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+      #{customerLvl,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wt2024.points.repository.customer.entity.Customer">
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="birthdate != null">
+        birthdate,
+      </if>
+      <if test="institutionId != null">
+        institution_id,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="customerLvl != null">
+        customer_lvl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdate != null">
+        #{birthdate,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionId != null">
+        #{institutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="customerLvl != null">
+        #{customerLvl,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wt2024.points.repository.customer.entity.Customer">
+    update customer
+    <set>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdate != null">
+        birthdate = #{birthdate,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionId != null">
+        institution_id = #{institutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="customerLvl != null">
+        customer_lvl = #{customerLvl,jdbcType=CHAR},
+      </if>
+    </set>
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wt2024.points.repository.customer.entity.Customer">
+    update customer
+    set customer_name = #{customerName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      birthdate = #{birthdate,jdbcType=VARCHAR},
+      institution_id = #{institutionId,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      customer_lvl = #{customerLvl,jdbcType=CHAR}
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+  </update>
+</mapper>

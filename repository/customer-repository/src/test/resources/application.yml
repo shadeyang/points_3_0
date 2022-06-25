@@ -1,0 +1,50 @@
+info:
+  app:
+    name: "@project.name@"
+    version: "@project.version@"
+
+spring:
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+  application:
+    module: customer
+    name: points-customer-db-test
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:/h2/ddl/customer_database.sql'
+    username: sa
+    password:
+    schema: classpath:/h2/ddl/*.sql
+    # Hikari 连接池配置
+    # 最小空闲连接数量
+    hikari:
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 100
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 连接池名称
+      pool-name: MyHikariCP
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+mybatis:
+  # sql存放的位置
+  mapperLocations: classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.wt2024.points.repository.customer.entity
+  # 原生配置
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    mapUnderscoreToCamelCase: true
+    cacheEnabled: false
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbcTypeForNull: 'null'
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

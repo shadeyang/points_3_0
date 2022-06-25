@@ -1,0 +1,1 @@
+providerFilter=com.wt2024.points.dubbo.backend.filter.PointsProviderContextFilter

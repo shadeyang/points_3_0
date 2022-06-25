@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.merchant.mapper.MerchantClearingMapper">
+  <resultMap id="BaseResultMap" type="com.wt2024.points.repository.merchant.entity.MerchantClearing">
+    <constructor>
+      <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trans_date" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trans_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="old_trans_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sys_trans_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="reversed_flag" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wt2024.points.repository.merchant.entity.MerchantClearing">
+    <constructor>
+      <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trans_date" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trans_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="old_trans_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sys_trans_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="reversed_flag" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="description" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <insert id="insert" parameterType="com.wt2024.points.repository.merchant.entity.MerchantClearing">
+    insert into merchant_clearing (merchant_no, trans_no, trans_date, 
+      trans_time, old_trans_no, sys_trans_no, 
+      points_type_no, points_amount, institution_id, 
+      reversed_flag, clearing_amt, description
+      )
+    values (#{merchantNo,jdbcType=VARCHAR}, #{transNo,jdbcType=VARCHAR}, #{transDate,jdbcType=VARCHAR}, 
+      #{transTime,jdbcType=VARCHAR}, #{oldTransNo,jdbcType=VARCHAR}, #{sysTransNo,jdbcType=VARCHAR}, 
+      #{pointsTypeNo,jdbcType=VARCHAR}, #{pointsAmount,jdbcType=DECIMAL}, #{institutionId,jdbcType=VARCHAR}, 
+      #{reversedFlag,jdbcType=CHAR}, #{clearingAmt,jdbcType=DECIMAL}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wt2024.points.repository.merchant.entity.MerchantClearing">
+    insert into merchant_clearing
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="merchantNo != null">
+        merchant_no,
+      </if>
+      <if test="transNo != null">
+        trans_no,
+      </if>
+      <if test="transDate != null">
+        trans_date,
+      </if>
+      <if test="transTime != null">
+        trans_time,
+      </if>
+      <if test="oldTransNo != null">
+        old_trans_no,
+      </if>
+      <if test="sysTransNo != null">
+        sys_trans_no,
+      </if>
+      <if test="pointsTypeNo != null">
+        points_type_no,
+      </if>
+      <if test="pointsAmount != null">
+        points_amount,
+      </if>
+      <if test="institutionId != null">
+        institution_id,
+      </if>
+      <if test="reversedFlag != null">
+        reversed_flag,
+      </if>
+      <if test="clearingAmt != null">
+        clearing_amt,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="merchantNo != null">
+        #{merchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transNo != null">
+        #{transNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null">
+        #{transDate,jdbcType=VARCHAR},
+      </if>
+      <if test="transTime != null">
+        #{transTime,jdbcType=VARCHAR},
+      </if>
+      <if test="oldTransNo != null">
+        #{oldTransNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sysTransNo != null">
+        #{sysTransNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pointsTypeNo != null">
+        #{pointsTypeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pointsAmount != null">
+        #{pointsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="institutionId != null">
+        #{institutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="reversedFlag != null">
+        #{reversedFlag,jdbcType=CHAR},
+      </if>
+      <if test="clearingAmt != null">
+        #{clearingAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

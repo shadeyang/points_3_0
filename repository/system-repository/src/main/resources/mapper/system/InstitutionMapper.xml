@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.system.mapper.InstitutionMapper">
+  <resultMap id="BaseResultMap" type="com.wt2024.points.repository.system.entity.Institution">
+    <constructor>
+      <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="institution_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="institution_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="parent_institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="top_institution_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    institution_id, institution_no, institution_name,parent_institution_id, top_institution_id,description
+  </sql>
+  <insert id="insert" parameterType="com.wt2024.points.repository.system.entity.Institution">
+    insert into institution (institution_id, institution_no, institution_name, 
+      parent_institution_id, top_institution_id, 
+      description)
+    values (#{institutionId,jdbcType=VARCHAR}, #{institutionNo,jdbcType=VARCHAR}, #{institutionName,jdbcType=VARCHAR}, 
+      #{parentInstitutionId,jdbcType=VARCHAR}, #{topInstitutionId,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wt2024.points.repository.system.entity.Institution">
+    insert into institution
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="institutionId != null">
+        institution_id,
+      </if>
+      <if test="institutionNo != null">
+        institution_no,
+      </if>
+      <if test="institutionName != null">
+        institution_name,
+      </if>
+      <if test="parentInstitutionId != null">
+        parent_institution_id,
+      </if>
+      <if test="topInstitutionId != null">
+        top_institution_id,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="institutionId != null">
+        #{institutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionNo != null">
+        #{institutionNo,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionName != null">
+        #{institutionName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentInstitutionId != null">
+        #{parentInstitutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="topInstitutionId != null">
+        #{topInstitutionId,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateInfo">
+    update institution set institution_no = #{institutionNo,jdbcType=VARCHAR}, institution_name = #{institutionName,jdbcType=VARCHAR}, description = #{description,jdbcType=VARCHAR} where institution_id=#{institutionId,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByInstitutionId">
+    delete from institution where institution_id=#{institutionId,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectFirstOne" resultMap="BaseResultMap" parameterType="com.wt2024.points.repository.system.entity.Institution">
+    select
+    <include refid="Base_Column_List"/>
+    from institution where institution_no = #{institutionNo,jdbcType=VARCHAR}
+    <if test=" parentInstitutionId != null and parentInstitutionId != ''">
+      and parent_institution_id=#{parentInstitutionId,jdbcType=VARCHAR}
+    </if>
+    and top_institution_id=#{topInstitutionId,jdbcType=VARCHAR} limit 1
+  </select>
+    <select id="selectByTopInstitutionId" resultMap="BaseResultMap" parameterType="String">
+      select <include refid="Base_Column_List"/> from institution
+      <where>
+        <if test="topInstitutionId != null and topInstitutionId != ''">
+          and top_institution_id=#{topInstitutionId,jdbcType=VARCHAR}
+        </if>
+      </where>
+    </select>
+  <select id="selectByParentInstitutionId" resultMap="BaseResultMap" parameterType="String">
+    select <include refid="Base_Column_List"/> from institution
+    <where>
+      <if test="parentInstitutionId != null and parentInstitutionId != ''">
+        and parent_institution_id=#{parentInstitutionId,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectByInstitutionId" resultMap="BaseResultMap" parameterType="String">
+    select <include refid="Base_Column_List"/> from institution where institution_id=#{institutionId,jdbcType=VARCHAR}
+  </select>
+</mapper>

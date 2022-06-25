@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsAccountInfoMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsAccountInfo">
+        <constructor>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_balance" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="freezing_points" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="in_transit_points" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="points_account_status" javaType="java.lang.String" jdbcType="CHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        customer_id, points_type_no, points_balance, freezing_points, in_transit_points, points_account_status
+    </sql>
+    <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsAccountInfo">
+        insert into points_account_info (customer_id, points_type_no, points_balance,
+        freezing_points, in_transit_points, points_account_status)
+        values (#{customerId,jdbcType=VARCHAR}, #{pointsTypeNo,jdbcType=VARCHAR}, #{pointsBalance,jdbcType=DECIMAL},
+        #{freezingPoints,jdbcType=DECIMAL}, #{inTransitPoints,jdbcType=DECIMAL},
+        #{pointsAccountStatus,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wt2024.points.repository.account.entity.PointsAccountInfo">
+        insert into points_account_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">
+                customer_id,
+            </if>
+            <if test="pointsTypeNo != null">
+                points_type_no,
+            </if>
+            <if test="pointsBalance != null">
+                points_balance,
+            </if>
+            <if test="freezingPoints != null">
+                freezing_points,
+            </if>
+            <if test="inTransitPoints != null">
+                in_transit_points,
+            </if>
+            <if test="pointsAccountStatus != null">
+                points_account_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">
+                #{customerId,jdbcType=VARCHAR},
+            </if>
+            <if test="pointsTypeNo != null">
+                #{pointsTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pointsBalance != null">
+                #{pointsBalance,jdbcType=DECIMAL},
+            </if>
+            <if test="freezingPoints != null">
+                #{freezingPoints,jdbcType=DECIMAL},
+            </if>
+            <if test="inTransitPoints != null">
+                #{inTransitPoints,jdbcType=DECIMAL},
+            </if>
+            <if test="pointsAccountStatus != null">
+                #{pointsAccountStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updatePointAmount">
+        update points_account_info
+        set points_balance = points_balance + #{pointsAmount}
+        where customer_id = #{customerId}
+        and points_type_no = #{pointsTypeNo}
+        and (points_balance + #{pointsAmount})<![CDATA[ >= ]]>0
+    </update>
+    <update id="updateStatus">
+        update points_account_info
+        set points_account_status = #{status}
+        where customer_id = #{customerId}
+          and points_type_no = #{pointsTypeNo}
+    </update>
+    <update id="updateFreezingPoints">
+        update points_account_info
+        set freezing_points = #{freezingPoints}
+        where customer_id = #{customerId}
+          and points_type_no = #{pointsTypeNo}
+    </update>
+    <select id="selectPointsAccountInfoByPointsTypeNo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from points_account_info
+        where customer_id = #{customerId}
+        <if test="pointsTypeNos != null and pointsTypeNos.size > 0">
+            and points_type_no in
+            <foreach collection="pointsTypeNos" item="pt" index="index" open="(" close=")" separator=",">
+                #{pt}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectPointsAccountInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from points_account_info
+        <where>
+            <if test="customerId != null and customerId != ''">
+                and customer_id = #{customerId}
+            </if>
+            <if test="pointsTypeNo != null and pointsTypeNo != ''">
+                and points_type_no = #{pointsTypeNo}
+            </if>
+            <if test="pointsAccountStatus != null and pointsAccountStatus != ''">
+                and points_account_status = #{pointsAccountStatus}
+            </if>
+        </where>
+    </select>
+</mapper>

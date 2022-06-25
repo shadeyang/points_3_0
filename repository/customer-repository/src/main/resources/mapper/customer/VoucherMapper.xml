@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.customer.mapper.VoucherMapper">
+  <resultMap id="BaseResultMap" type="com.wt2024.points.repository.customer.entity.Voucher">
+    <constructor>
+      <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="voucher_type_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="voucher_open_date" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    customer_id, voucher_type_no,voucher_no, voucher_open_date
+  </sql>
+  <insert id="insert" parameterType="com.wt2024.points.repository.customer.entity.Voucher">
+    insert into voucher (customer_id, voucher_type_no, voucher_no, 
+      voucher_open_date)
+    values (#{customerId,jdbcType=VARCHAR}, #{voucherTypeNo,jdbcType=VARCHAR}, #{voucherNo,jdbcType=VARCHAR}, 
+      #{voucherOpenDate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wt2024.points.repository.customer.entity.Voucher">
+    insert into voucher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="voucherTypeNo != null">
+        voucher_type_no,
+      </if>
+      <if test="voucherNo != null">
+        voucher_no,
+      </if>
+      <if test="voucherOpenDate != null">
+        voucher_open_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherTypeNo != null">
+        #{voucherTypeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherNo != null">
+        #{voucherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherOpenDate != null">
+        #{voucherOpenDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByVoucher">
+    update voucher set voucher_open_date = #{voucherOpenDate,jdbcType=VARCHAR} where customer_id = #{customerId,jdbcType=VARCHAR} and voucher_type_no = #{voucherTypeNo,jdbcType=VARCHAR} and voucher_no =  #{voucherNo,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByVoucher">
+    delete from voucher where customer_id = #{customerId,jdbcType=VARCHAR} and voucher_type_no = #{voucherTypeNo,jdbcType=VARCHAR} and voucher_no =  #{voucherNo,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectByVoucher" resultMap="BaseResultMap" parameterType="com.wt2024.points.repository.customer.entity.Voucher">
+    select
+    <include refid="Base_Column_List"/>
+    from voucher where voucher_type_no = #{voucherTypeNo,jdbcType=VARCHAR} and voucher_no = #{voucherNo,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByCustomerId" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/> from voucher where customer_id = #{customerId,jdbcType=VARCHAR}
+    </select>
+</mapper>

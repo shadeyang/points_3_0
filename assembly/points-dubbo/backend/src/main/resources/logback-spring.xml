@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <springProperty scope="context" name="app.name" source="spring.application.name" defaultValue="wtapp"/>
+    <springProperty scope="context" name="node.name" source="logging.node-name" defaultValue="master"/>
+
+    <!-- 输出到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${app.name}][${node.name}][%X{traceId}|%X{userNo}|%X{remoteHost}|%X{localHost}][%thread] %-5level %logger{36} [%file : %line] - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <file>${user.home}/log/${app.name}-${node.name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${user.home}/log/${node.name}/${app.name}-${node.name}.%d{yyyy-MM-dd}.log.gz
+            </FileNamePattern>
+            <!--日志文件保留天数 -->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${app.name}][${node.name}][%X{traceId}|%X{userNo}|%X{remoteHost}|%X{localHost}][%thread] %-5level %logger{36} [%file : %line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="SCHEDULE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <file>${user.home}/log/${app.name}-${node.name}-schedule.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${user.home}/log/${node.name}/${app.name}-${node.name}-schedule.%d{yyyy-MM-dd}.log.gz
+            </FileNamePattern>
+            <!--日志文件保留天数 -->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${app.name}][${node.name}][%thread] %-5level %logger{36} [%file :
+                %line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="MONITOR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <file>${user.home}/log/${app.name}-${node.name}-monitor.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${user.home}/log/${node.name}/${app.name}-${node.name}-monitor.%d{yyyy-MM-dd}.log.gz
+            </FileNamePattern>
+            <!--日志文件保留天数 -->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}
+                [${app.name}][${node.name}][%X{traceId}|%X{userNo}|%X{remoteHost}|%X{localHost}][%thread] %-5level
+                %logger{36} [%file : %line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="IOTRANSFER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <file>${user.home}/log/${app.name}-${node.name}-io.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${user.home}/log/${node.name}/${app.name}-${node.name}-io.%d{yyyy-MM-dd}.log.gz
+            </FileNamePattern>
+            <!--日志文件保留天数 -->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${app.name}][${node.name}][%X{traceId}|%X{userNo}|%X{remoteHost}|%X{localHost}][%thread] %-5level %logger{36} [%file : %line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.beans" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="org.apache.zookeeper" level="ERROR"/>
+    <logger name="com.alibaba.dubbo" level="ERROR"/>
+    <logger name="com.alibaba.dubbo.rpc.protocol.rest.support" level="INFO"/>
+
+    <logger name="com.wt2024" level="DEBUG"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <springProfile name="stg1,stg2">
+        <logger name="com.wt2024.points.backend.schedule" level="INFO" additivity="false">
+            <appender-ref ref="SCHEDULE"/>
+        </logger>
+        <logger name="com.wt2024.points.backend.thread" level="INFO" additivity="false">
+            <appender-ref ref="SCHEDULE"/>
+        </logger>
+
+        <logger name="com.uxunchina.framework.context.Wt2024Monitor" level="INFO" additivity="false">
+            <appender-ref ref="MONITOR"/>
+        </logger>
+        <logger name="com.uxunchina.framework.context.Wt2024IOTransfer" level="INFO" additivity="false">
+            <appender-ref ref="IOTRANSFER"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prd1,prd2">
+        <logger name="com.wt2024" level="INFO"/>
+
+        <logger name="com.wt2024.points.backend.schedule" level="INFO" additivity="false">
+            <appender-ref ref="SCHEDULE"/>
+        </logger>
+        <logger name="com.wt2024.points.backend.thread" level="INFO" additivity="false">
+            <appender-ref ref="SCHEDULE"/>
+        </logger>
+
+        <logger name="com.uxunchina.framework.context.Wt2024Monitor" level="INFO" additivity="false">
+            <appender-ref ref="MONITOR"/>
+        </logger>
+        <logger name="com.uxunchina.framework.context.Wt2024IOTransfer" level="INFO" additivity="false">
+            <appender-ref ref="IOTRANSFER"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>

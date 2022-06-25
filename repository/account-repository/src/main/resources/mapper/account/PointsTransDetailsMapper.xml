@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsTransDetailsMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsTransDetails">
+        <constructor>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="source_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="cost_line" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="PointsAccountDetailMap" type="com.wt2024.points.repository.account.vo.PointsAccountDetails">
+        <constructor>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="expiration_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="PointsDetailsBalanceMap" type="com.wt2024.points.repository.account.vo.PointsDetailsBalance">
+        <constructor>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        trans_no , customer_id, source_trans_no,
+        points_type_no, end_date, points_amount,
+        merchant_no, cost_line, clearing_amt
+    </sql>
+    <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsTransDetails">
+        insert into points_trans_details (trans_no, customer_id, source_trans_no,
+        points_type_no, end_date, points_amount,
+        merchant_no, cost_line, clearing_amt)
+        values (#{transNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{sourceTransNo,jdbcType=VARCHAR},
+        #{pointsTypeNo,jdbcType=VARCHAR}, #{endDate,jdbcType=TIMESTAMP},
+        #{pointsAmount,jdbcType=DECIMAL},
+        #{merchantNo,jdbcType=VARCHAR}, #{costLine,jdbcType=VARCHAR}, #{clearingAmt,jdbcType=DECIMAL})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into points_trans_details (trans_no, customer_id, source_trans_no,
+        points_type_no, end_date, points_amount,
+        merchant_no, cost_line, clearing_amt)
+        values
+        <foreach collection="list" item="ptd" index="index" separator=",">
+            (#{ptd.transNo,jdbcType=VARCHAR}, #{ptd.customerId,jdbcType=VARCHAR},
+            #{ptd.sourceTransNo,jdbcType=VARCHAR},
+            #{ptd.pointsTypeNo,jdbcType=VARCHAR}, #{ptd.endDate,jdbcType=TIMESTAMP},
+            #{ptd.pointsAmount,jdbcType=DECIMAL},
+            #{ptd.merchantNo,jdbcType=VARCHAR}, #{ptd.costLine,jdbcType=VARCHAR}, #{ptd.clearingAmt,jdbcType=DECIMAL})
+        </foreach>
+    </insert>
+    <select id="queryPointsTransDetailsBySourceTransNo"
+            parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        #{transNo,jdbcType=VARCHAR} as trans_no, customer_id, #{trans_no,jdbcType=VARCHAR} as
+        source_trans_no,points_type_no,
+        end_date, points_amount, merchant_no, cost_line, clearing_amt
+        from(
+        select
+        customer_id,
+        points_type_no,
+        end_date,
+        sum(points_amount) as points_amount,
+        merchant_no,
+        cost_line,
+        sum(clearing_amt) as clearing_amt,
+        source_trans_no
+        from points_trans_details
+        where trans_no = #{transNo,jdbcType=VARCHAR}
+        group by customer_id,
+        points_type_no, end_date, merchant_no, cost_line, source_trans_no)t where points_amount!=0 or clearing_amt!=0
+    </select>
+    <select id="queryPointsTransDetailsByCustomerAndPointType"
+            resultMap="BaseResultMap">
+        SELECT
+            source_trans_no AS trans_no, #{customerId} as customer_id, source_trans_no, #{pointsTypeNo} as points_type_no,
+            end_date, points_amount, '' AS merchant_no, cost_line, 0 AS clearing_amt
+        FROM(
+            SELECT source_trans_no, end_date, sum( points_amount ) AS points_amount, cost_line
+            FROM points_trans_details
+            WHERE customer_id = #{customerId} and points_type_no=#{pointsTypeNo}  GROUP BY source_trans_no, end_date, cost_line ORDER BY end_date
+        ) t WHERE points_amount != 0
+    </select>
+    <select id="selectByTransNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_details where trans_no=#{transNo}
+    </select>
+
+    <select id="queryPointsAccountDetail" resultMap="PointsAccountDetailMap">
+        select sum(points_amount) as points_amount,end_date as expiration_time from points_trans_details
+        where customer_id = #{customerId} and points_type_no = #{pointsTypeNo}
+        <if test="excludeTrans != null and excludeTrans.size > 0">
+            and trans_no not in
+            <foreach collection="excludeTrans" item="transNo" index="index" open="(" close=")" separator=",">
+                #{transNo}
+            </foreach>
+        </if>
+        group by end_date order by end_date
+    </select>
+    <select id="selectBySourceTransNo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include> from points_trans_details where
+        source_trans_no=#{transNo}
+        and trans_no!=#{transNo}
+    </select>
+    <select id="selectPointsDetailsBalanceByTransNo"
+            resultMap="PointsDetailsBalanceMap">
+        select trans_no,#{customerId} as customer_id, #{pointsTypeNo} as points_type_no, sum(points_amount) as points_amount
+        FROM(
+        select trans_no,points_amount from points_trans_details where trans_no in
+        <foreach collection="transNos" item="transNo" index="index" open="(" close=")" separator=",">#{transNo}</foreach>
+        union all
+        select source_trans_no as trans_no,points_amount from points_trans_details where source_trans_no in
+        <foreach collection="transNos" item="transNo" index="index" open="(" close=")" separator=",">#{transNo}</foreach>
+        and source_trans_no != trans_no)t
+        group by trans_no
+    </select>
+    <select id="selectBackPointsTransDetailsByTransNo"
+            resultMap="BaseResultMap">
+        select min(trans_no) as trans_no,customer_id,source_trans_no,points_type_no,end_date,sum(points_amount) as points_amount,merchant_no,cost_line,sum(clearing_amt) as clearing_amt from points_trans_details WHERE trans_no in
+        <foreach collection="transNos" item="transNo" index="index" open="(" close=")" separator=",">
+            #{transNo}
+        </foreach>
+        group by customer_id,source_trans_no,points_type_no,end_date,merchant_no,cost_line
+    </select>
+</mapper>

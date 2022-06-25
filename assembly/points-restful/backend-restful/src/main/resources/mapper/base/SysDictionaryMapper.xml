@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wt2024.base.mapper.SysDictionaryMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.base.entity.SysDictionary">
+        <result column="dict_key" jdbcType="VARCHAR" property="dictKey"/>
+        <result column="dict_lable" jdbcType="VARCHAR" property="dictLable"/>
+        <result column="dict_desc" jdbcType="VARCHAR" property="dictDesc"/>
+        <result column="dict_value" jdbcType="VARCHAR" property="dictValue"/>
+        <result column="dict_index" jdbcType="INTEGER" property="dictIndex"/>
+        <result column="dict_status" jdbcType="CHAR" property="dictStatus"/>
+        <result column="dict_module" jdbcType="VARCHAR" property="dictModule"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        dict_key, dict_lable, dict_desc, dict_value, dict_index, dict_status, dict_module
+    </sql>
+
+    <select id="selectByModule" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dictionary
+        where dict_status ='0' and dict_module in
+        <foreach item="modules" collection="modules" open="(" separator="," close=")">
+            #{modules,jdbcType=VARCHAR}
+        </foreach>
+        order by dict_index
+        <!--( <if test="module != null" > #{module,jdbcType=VARCHAR},</if>'common')-->
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dictionary
+        where dict_status ='0' order by dict_module, dict_index
+    </select>
+
+    <select id="selectCountByDictKey" resultType="java.lang.Integer">
+        select count(1) from sys_dictionary where dict_module=#{module,jdbcType=VARCHAR} and
+        dict_key=#{dictKey,jdbcType=VARCHAR} and dict_lable=#{dictLable,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByDictKey" parameterType="com.wt2024.base.entity.SysDictionary">
+        update sys_dictionary set
+        dict_desc=#{dictDesc,jdbcType=VARCHAR},dict_value=#{dictValue,jdbcType=VARCHAR},dict_index=#{dictIndex,jdbcType=INTEGER},dict_status=#{dictStatus,jdbcType=VARCHAR}
+        where dict_module=#{dictModule,jdbcType=VARCHAR} and dict_key=#{dictKey,jdbcType=VARCHAR} and
+        dict_lable=#{dictLable,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="saveSysDictionary" parameterType="com.wt2024.base.entity.SysDictionary">
+        insert into sys_dictionary (<include refid="Base_Column_List"/>) values
+        (#{dictKey,jdbcType=VARCHAR},#{dictLable,jdbcType=VARCHAR},#{dictDesc,jdbcType=VARCHAR},#{dictValue,jdbcType=VARCHAR},#{dictIndex,jdbcType=INTEGER},#{dictStatus,jdbcType=VARCHAR},#{dictModule,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="selectByModuleAndDict" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dictionary
+        where dict_status ='0' and dict_module in
+        <foreach item="modules" collection="modules" open="(" separator="," close=")">
+            #{modules,jdbcType=VARCHAR}
+        </foreach>
+        and dict_key = #{sysDictionary.dictKey,jdbcType=VARCHAR}
+        order by dict_index
+    </select>
+
+    <select id="selectByModuleAndDictLable" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dictionary
+        where dict_status ='0' and dict_module in
+        <foreach item="modules" collection="modules" open="(" separator="," close=")">
+            #{modules,jdbcType=VARCHAR}
+        </foreach>
+        and dict_key = #{sysDictionary.dictKey,jdbcType=VARCHAR} and dict_lable =
+        #{sysDictionary.dictLable,jdbcType=VARCHAR}
+        order by dict_index
+    </select>
+
+    <insert id="delSysDictionary" parameterType="com.wt2024.base.entity.SysDictionary">
+        delete from sys_dictionary where dict_module=#{dictModule,jdbcType=VARCHAR} and
+        dict_key=#{dictKey,jdbcType=VARCHAR} and dict_lable=#{dictLable,jdbcType=VARCHAR}
+    </insert>
+
+</mapper>

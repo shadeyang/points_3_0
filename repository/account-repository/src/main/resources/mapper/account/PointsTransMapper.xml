@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsTransMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsTrans">
+        <constructor>
+            <arg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_timestamp" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="trans_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="debit_or_credit" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="reversed_flag" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="old_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_channel" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="sys_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="rules_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="cost_line" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.wt2024.points.repository.account.entity.PointsTrans">
+        <constructor>
+            <arg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_timestamp" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="trans_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="debit_or_credit" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="points_amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="reversed_flag" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="old_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_channel" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="merchant_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="voucher_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="sys_trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="rules_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="cost_line" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="clearing_amt" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="description" javaType="java.lang.String" jdbcType="LONGVARCHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,trans_no, customer_id, points_type_no,
+        institution_id, trans_date, trans_time,trans_timestamp,
+        trans_type_no, debit_or_credit, end_date,
+        points_amount, reversed_flag, old_trans_no,
+        trans_channel, merchant_no, voucher_type_no,
+        voucher_no, trans_status, operator,
+        sys_trans_no, rules_id, cost_line,
+        clearing_amt
+    </sql>
+    <sql id="Blob_Column_List">
+        description
+    </sql>
+    <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsTrans">
+        insert into points_trans (trans_no, customer_id, points_type_no,
+        institution_id, trans_date, trans_time, trans_timestamp,
+        trans_type_no, debit_or_credit, end_date,
+        points_amount, reversed_flag, old_trans_no,
+        trans_channel, merchant_no, voucher_type_no,
+        voucher_no, trans_status, operator,
+        sys_trans_no, rules_id, cost_line,
+        clearing_amt, description)
+        values (#{transNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{pointsTypeNo,jdbcType=VARCHAR},
+        #{institutionId,jdbcType=VARCHAR}, #{transDate,jdbcType=VARCHAR}, #{transTime,jdbcType=VARCHAR},
+        #{transTimestamp,jdbcType=BIGINT},
+        #{transTypeNo,jdbcType=VARCHAR}, #{debitOrCredit,jdbcType=CHAR}, #{endDate,jdbcType=TIMESTAMP},
+        #{pointsAmount,jdbcType=DECIMAL}, #{reversedFlag,jdbcType=CHAR}, #{oldTransNo,jdbcType=VARCHAR},
+        #{transChannel,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR}, #{voucherTypeNo,jdbcType=VARCHAR},
+        #{voucherNo,jdbcType=VARCHAR}, #{transStatus,jdbcType=CHAR}, #{operator,jdbcType=VARCHAR},
+        #{sysTransNo,jdbcType=VARCHAR}, #{rulesId,jdbcType=INTEGER}, #{costLine,jdbcType=VARCHAR},
+        #{clearingAmt,jdbcType=DECIMAL}, #{description,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <select id="selectPointsTransByPage" resultMap="ResultMapWithBLOBs">
+        select<include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from points_trans
+        where customer_id = #{customerId} and points_type_no = #{pointsTypeNo}
+        <if test="fromId>0">
+            and id <![CDATA[ > ]]> #{fromId}
+        </if>
+        <if test="fromDate>0">
+            and trans_timestamp <![CDATA[ >= ]]> #{fromDate}
+        </if>
+        <if test="toDate>0">
+            and trans_timestamp <![CDATA[ <= ]]> #{toDate}
+        </if>
+        limit #{startIndex}, #{endIndex}
+    </select>
+    <select id="selectBySysTransNo" resultType="com.wt2024.points.repository.account.entity.PointsTrans">
+        select<include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from points_trans
+        where sys_trans_no = #{sysTransNo,jdbcType=VARCHAR}
+    </select>
+    <select id="selectBySysTransNoAndStatus" resultType="com.wt2024.points.repository.account.entity.PointsTrans">
+        select<include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from points_trans
+        where sys_trans_no = #{sysTransNo,jdbcType=VARCHAR} and trans_status = #{status,jdbcType=CHAR}
+    </select>
+    <select id="selectByOldTransNoAndStatus"
+            resultType="com.wt2024.points.repository.account.entity.PointsTrans">
+        select<include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from points_trans
+        where old_trans_no = #{transNo,jdbcType=VARCHAR} and trans_status = #{status,jdbcType=CHAR}
+    </select>
+    <select id="selectByTrans" resultMap="ResultMapWithBLOBs">
+        select<include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from points_trans
+        where trans_timestamp between #{fromDate} and #{toDate}
+        <if test="pointsTrans.transNo != null and pointsTrans.transNo != ''">
+            and trans_no = #{pointsTrans.transNo}
+        </if>
+        <if test="pointsTrans.customerId != null and pointsTrans.customerId != ''">
+            and customer_id = #{pointsTrans.customerId}
+        </if>
+        <if test="pointsTrans.pointsTypeNo != null and pointsTrans.pointsTypeNo != ''">
+            and points_type_no = #{pointsTrans.pointsTypeNo}
+        </if>
+        <if test="pointsTrans.transTypeNo != null and pointsTrans.transTypeNo != ''">
+            and trans_type_no = #{pointsTrans.transTypeNo}
+        </if>
+        <if test="pointsTrans.debitOrCredit != null and pointsTrans.debitOrCredit != ''">
+            and debit_or_credit = #{pointsTrans.debitOrCredit}
+        </if>
+        <if test="pointsTrans.reversedFlag != null and pointsTrans.reversedFlag != ''">
+            and reversed_flag = #{pointsTrans.reversedFlag}
+        </if>
+        <if test="pointsTrans.voucherTypeNo != null and pointsTrans.voucherTypeNo != ''">
+            and voucher_type_no = #{pointsTrans.voucherTypeNo}
+        </if>
+        <if test="pointsTrans.voucherNo != null and pointsTrans.voucherNo != ''">
+            and voucher_no = #{pointsTrans.voucherNo}
+        </if>
+        <if test="pointsTrans.transStatus != null and pointsTrans.transStatus != ''">
+            and trans_status = #{pointsTrans.transStatus}
+        </if>
+        <if test="pointsTrans.sysTransNo != null and pointsTrans.sysTransNo != ''">
+            and sys_trans_no = #{pointsTrans.sysTransNo}
+        </if>
+    </select>
+
+
+</mapper>

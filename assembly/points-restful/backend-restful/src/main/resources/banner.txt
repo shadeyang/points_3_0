@@ -1,0 +1,9 @@
+
+ ____   __    __   __ _  ____  ____        ____         __
+(  _ \ /  \  (  ) (  ( \(_  _)/ ___)      ( __ \       /  \
+ ) __/(  O )  )(  /    /  )(  \___ \       (__ (  _   (  0 )
+(__)   \__/  (__) \_)__) (__) (____/      (____/ (_)   \__/
+
+                                             www.wt2024.com
+:: Application Version :: ${points.version}
+:: Spring Boot :: ${spring-boot.formatted-version}

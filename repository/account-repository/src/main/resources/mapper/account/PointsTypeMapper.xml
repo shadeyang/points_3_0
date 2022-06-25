@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsTypeMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsType">
+        <constructor>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="institution_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="rate" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        points_type_no, points_type_name, institution_id, rate, description
+    </sql>
+
+    <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsType">
+        insert into points_type (points_type_no, points_type_name, institution_id,
+        rate, description)
+        values (#{pointsTypeNo,jdbcType=VARCHAR}, #{pointsTypeName,jdbcType=VARCHAR}, #{institutionId,jdbcType=VARCHAR},
+        #{rate,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.wt2024.points.repository.account.entity.PointsType">
+        insert into points_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pointsTypeNo != null">
+                points_type_no,
+            </if>
+            <if test="pointsTypeName != null">
+                points_type_name,
+            </if>
+            <if test="institutionId != null">
+                institution_id,
+            </if>
+            <if test="rate != null">
+                rate,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pointsTypeNo != null">
+                #{pointsTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pointsTypeName != null">
+                #{pointsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="institutionId != null">
+                #{institutionId,jdbcType=VARCHAR},
+            </if>
+            <if test="rate != null">
+                #{rate,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPointsTypeNo" parameterType="com.wt2024.points.repository.account.entity.PointsType">
+        update points_type set points_type_name = #{pointsTypeName,jdbcType=VARCHAR},rate = #{rate,jdbcType=DECIMAL},description = #{description,jdbcType=VARCHAR} where institution_id = #{institutionId,jdbcType=VARCHAR} and points_type_no =
+        #{pointsTypeNo,jdbcType=VARCHAR}
+    </update>
+    <delete id="deleteByPointsTypeNo">
+        delete from points_type where institution_id = #{institutionId,jdbcType=VARCHAR} and points_type_no = #{pointsTypeNo,jdbcType=VARCHAR}
+    </delete>
+    <select id="selectByInstitutionId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from points_type
+        <where>
+            <if test="institutionId != null and institutionId != ''">
+                and institution_id = #{institutionId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="selectByInstitutionAndPointsType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_type where institution_id = #{institutionId,jdbcType=VARCHAR} and points_type_no =
+        #{pointsTypeNo,jdbcType=VARCHAR}
+    </select>
+</mapper>

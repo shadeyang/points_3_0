@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    dynamic:
+      primary: system
+      strict: true
+      datasource:
+        system:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://docker.for.mac.host.internal:3306/system?serverTimezone=Asia/Shanghai&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+          username: points_3
+          password: points123!@#
+        account:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://docker.for.mac.host.internal:3306/account?serverTimezone=Asia/Shanghai&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+          username: points_3
+          password: points123!@#
+        customer:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://docker.for.mac.host.internal:3306/customer?serverTimezone=Asia/Shanghai&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+          username: points_3
+          password: points123!@#
+        merchant:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://docker.for.mac.host.internal:3306/merchant?serverTimezone=Asia/Shanghai&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+          username: points_3
+          password: points123!@#
+      mp-enabled: true
+  redis:
+    #数据库索引
+    database: 0
+    host: docker.for.mac.host.internal
+    port: 6379
+    password:
+
+
+cache:
+  type: redis
+
+logging:
+  node-name: docker
+
+

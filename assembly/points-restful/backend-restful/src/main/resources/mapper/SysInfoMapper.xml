@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.restful.backend.mapper.SysInfoMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.restful.backend.entity.SysInfoEntity">
+        <constructor>
+            <arg column="custno" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="type" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="institution" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="custaddress" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="custrequestip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="privatekey" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="publickey" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="threedeskey" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="switchconf" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+    <insert id="insert" parameterType="com.wt2024.points.restful.backend.entity.SysInfoEntity">
+        insert into sys_info (custno, type, institution,
+        custaddress, custrequestip, privatekey,
+        publickey, threedeskey, switchconf
+        )
+        values (#{custno,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{institution,jdbcType=VARCHAR},
+        #{custaddress,jdbcType=VARCHAR}, #{custrequestip,jdbcType=VARCHAR}, #{privatekey,jdbcType=VARCHAR},
+        #{publickey,jdbcType=VARCHAR}, #{threedeskey,jdbcType=VARCHAR}, #{switchconf,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.wt2024.points.restful.backend.entity.SysInfoEntity">
+        insert into sys_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="custno != null">
+                custno,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="institution != null">
+                institution,
+            </if>
+            <if test="custaddress != null">
+                custaddress,
+            </if>
+            <if test="custrequestip != null">
+                custrequestip,
+            </if>
+            <if test="privatekey != null">
+                privatekey,
+            </if>
+            <if test="publickey != null">
+                publickey,
+            </if>
+            <if test="threedeskey != null">
+                threedeskey,
+            </if>
+            <if test="switchconf != null">
+                switchconf,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="custno != null">
+                #{custno,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=CHAR},
+            </if>
+            <if test="institution != null">
+                #{institution,jdbcType=VARCHAR},
+            </if>
+            <if test="custaddress != null">
+                #{custaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="custrequestip != null">
+                #{custrequestip,jdbcType=VARCHAR},
+            </if>
+            <if test="privatekey != null">
+                #{privatekey,jdbcType=VARCHAR},
+            </if>
+            <if test="publickey != null">
+                #{publickey,jdbcType=VARCHAR},
+            </if>
+            <if test="threedeskey != null">
+                #{threedeskey,jdbcType=VARCHAR},
+            </if>
+            <if test="switchconf != null">
+                #{switchconf,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select custno, type, institution,
+        custaddress, custrequestip, privatekey,
+        publickey, threedeskey, switchconf from sys_info
+    </select>
+</mapper>

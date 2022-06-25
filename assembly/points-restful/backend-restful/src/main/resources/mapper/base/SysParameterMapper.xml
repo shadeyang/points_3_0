@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wt2024.base.mapper.SysParameterMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.base.entity.SysParameter">
+        <result column="param_key" property="paramKey" jdbcType="VARCHAR"/>
+        <result column="param_desc" property="paramDesc" jdbcType="VARCHAR"/>
+        <result column="param_value1" property="paramValue1" jdbcType="VARCHAR"/>
+        <result column="param_value2" property="paramValue2" jdbcType="VARCHAR"/>
+        <result column="param_value3" property="paramValue3" jdbcType="VARCHAR"/>
+        <result column="param_status" property="paramStatus" jdbcType="CHAR"/>
+        <result column="param_module" property="paramModule" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        param_key, param_desc, param_value1, param_value2, param_value3, param_status, param_module
+    </sql>
+
+    <select id="selectByModule" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_parameter
+        where param_status ='0' and param_module in
+        <foreach item="modules" collection="modules" open="(" separator="," close=")">
+            #{modules,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_parameter
+        where param_status ='0'
+    </select>
+
+    <select id="selectCountByParamKey" resultType="java.lang.Integer">
+        select count(1) from sys_parameter where param_module=#{module,jdbcType=VARCHAR} and
+        param_key=#{paramKey,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByParamKey" parameterType="com.wt2024.base.entity.SysParameter">
+        update sys_parameter set
+        param_desc=#{paramDesc,jdbcType=VARCHAR},param_value1=#{paramValue1,jdbcType=VARCHAR},param_value2=#{paramValue2,jdbcType=VARCHAR},param_value3=#{paramValue3,jdbcType=VARCHAR},param_status=#{paramStatus,jdbcType=VARCHAR}
+        where param_module=#{paramModule,jdbcType=VARCHAR} and param_key=#{paramKey,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="saveSysParameter" parameterType="com.wt2024.base.entity.SysParameter">
+        insert into sys_parameter (<include refid="Base_Column_List"/>) values
+        (#{paramKey,jdbcType=VARCHAR},#{paramDesc,jdbcType=VARCHAR},#{paramValue1,jdbcType=VARCHAR},#{paramValue2,jdbcType=VARCHAR},#{paramValue3,jdbcType=VARCHAR},#{paramStatus,jdbcType=VARCHAR},#{paramModule,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="selectByModuleByParamKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_parameter
+        where param_status ='0' and param_module in
+        <foreach item="modules" collection="modules" open="(" separator="," close=")">
+            #{modules,jdbcType=VARCHAR}
+        </foreach>
+        and param_key = #{paramKey,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

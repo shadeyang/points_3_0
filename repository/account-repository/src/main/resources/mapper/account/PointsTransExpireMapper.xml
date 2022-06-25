@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt2024.points.repository.account.mapper.PointsTransExpireMapper">
+    <resultMap id="BaseResultMap" type="com.wt2024.points.repository.account.entity.PointsTransExpire">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="points_type_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="trans_no" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, customer_id, points_type_no, trans_no, end_date
+    </sql>
+
+    <insert id="insert" parameterType="com.wt2024.points.repository.account.entity.PointsTransExpire">
+        insert into points_trans_expire (customer_id, points_type_no, trans_no,
+        end_date)
+        values (#{customerId,jdbcType=VARCHAR}, #{pointsTypeNo,jdbcType=VARCHAR}, #{transNo,jdbcType=VARCHAR},
+        #{endDate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wt2024.points.repository.account.entity.PointsTransExpire">
+        insert into points_trans_expire
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">
+                customer_id,
+            </if>
+            <if test="pointsTypeNo != null">
+                points_type_no,
+            </if>
+            <if test="transNo != null">
+                trans_no,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">
+                #{customerId,jdbcType=VARCHAR},
+            </if>
+            <if test="pointsTypeNo != null">
+                #{pointsTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="transNo != null">
+                #{transNo,jdbcType=VARCHAR},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch">
+        insert into points_trans_expire (customer_id, points_type_no, trans_no, end_date)
+        values
+        <foreach collection="list" item="pte" index="index" separator=",">
+            (#{pte.customerId,jdbcType=VARCHAR}, #{pte.pointsTypeNo,jdbcType=VARCHAR}, #{pte.transNo,jdbcType=VARCHAR},
+            #{pte.endDate,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <delete id="deleteByTransNo">
+        delete from points_trans_expire where customer_id = #{customerId} and points_type_no = #{pointsTypeNo} and trans_no in
+        <foreach collection="transNoList" item="transNo" index="index" open="(" close=")" separator=",">
+            #{transNo}
+        </foreach>
+    </delete>
+    <select id="selectPointsTransExpireByPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from points_trans_expire
+        where id <![CDATA[ > ]]> #{fromId}
+        and end_date <![CDATA[ <= ]]> current_timestamp()
+        limit #{startIndex}, #{endIndex}
+    </select>
+    <select id="selectPointsExpireByCustomerIdAndPointsTypeNo" resultType="java.lang.String">
+        select DISTINCT trans_no from points_trans_expire
+        where customer_id = #{customerId} and points_type_no = #{pointsTypeNo}
+        and end_date <![CDATA[ <= ]]> current_timestamp()
+    </select>
+    <select id="selectPointsExpireByTransNoList" resultType="java.lang.String">
+        select trans_no from points_trans_expire where customer_id = #{customerId} and points_type_no = #{pointsTypeNo} and trans_no in
+        <foreach collection="transNoList" item="transNo" index="index" open="(" close=")" separator=",">
+            #{transNo}
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS `customer`;
+SET SCHEMA `customer`;
