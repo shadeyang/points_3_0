@@ -102,9 +102,16 @@
 
 4. 启动应用
 
-        IDE直接启动应用，运行springboot启动方法：`com.wt2024.points.restful.backend.ProviderLauncher#main`
+   * IDE直接启动应用，运行springboot启动方法：
 
-        docker容器启动应用，执行`assembly/points-restful/backend-restful/bin/build.sh` 构建本地docker镜像，完成后`assembly/points-restful/backend-restful/bin/run.sh` 启动docker容器。
+   > com.wt2024.points.restful.backend.ProviderLauncher#main
+
+   * docker容器启动应用，执行
+   
+   > assembly/points-restful/backend-restful/bin/build.sh
+   >
+   > assembly/points-restful/backend-restful/bin/run.sh
+   
 
 ## 欢迎交流
 
@@ -112,6 +119,6 @@
 
 ## 捐赠支持
 
-![pay.png](./doc/image/pay.png)
+<img src="./doc/image/pay.png" width="50%" height="50%" />
 
 创作不易，您可以请作者喝瓶可乐表示鼓励
