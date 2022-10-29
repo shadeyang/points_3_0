@@ -35,7 +35,7 @@
 
 7. 积分消费商户收单清算：根据积分消费的收单商户，进行应收费用的结算
 
-![](./doc/image/points-core-business.png)
+![](https://oss.wt2024.cn/git/resource/images/points-core-business.png)
 
 ## 架构设计
 
@@ -52,7 +52,7 @@
 | account  | 账户领域资源，积分的核心领域资源，涉及积分账户，交易流水，积分成本拆分等核心积分相关业务资源操作 |
 | merchat  | 商户领域资源，用于收单交易商户对象相关的操作                           |
 
-![](./doc/image/hexagonal-structure.jpg)
+![](https://oss.wt2024.cn/git/resource/images/hexagonal-structure.jpg)
 
 ## 
 
@@ -119,6 +119,6 @@
 
 ## 捐赠支持
 
-<img src="./doc/image/pay.png" width="50%" height="50%" />
+<img src="https://oss.wt2024.cn/git/resource/images/pay.png" width="50%" height="50%" />
 
 创作不易，您可以请作者喝瓶可乐表示鼓励
